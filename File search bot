@@ -1,0 +1,44 @@
+import os
+from telegram import Update
+from telegram.ext import Updater, CommandHandler, CallbackContext
+
+# Replace 'YOUR_TOKEN_HERE' with your actual bot token
+BOT_TOKEN = 'YOUR_TOKEN_HERE'
+SEARCH_DIR = '/path/to/search/directory'  # Replace with the directory you want to search
+
+def start(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text('Hi! I am your file search bot. Use /search <filename> to search for a file.')
+
+def search(update: Update, context: CallbackContext) -> None:
+    if not context.args:
+        update.message.reply_text('Please provide a filename to search.')
+        return
+
+    filename = context.args[0]
+    result = find_files(SEARCH_DIR, filename)
+
+    if result:
+        update.message.reply_text(f'Files found:\n{result}')
+    else:
+        update.message.reply_text('No files found.')
+
+def find_files(directory: str, filename: str) -> str:
+    result = []
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            if filename.lower() in file.lower():
+                result.append(os.path.join(root, file))
+    return '\n'.join(result)
+
+def main() -> None:
+    updater = Updater(BOT_TOKEN, use_context=True)
+    dispatcher = updater.dispatcher
+
+    dispatcher.add_handler(CommandHandler("start", start))
+    dispatcher.add_handler(CommandHandler("search", search))
+
+    updater.start_polling()
+    updater.idle()
+
+if __name__ == '__main__':
+    main()
