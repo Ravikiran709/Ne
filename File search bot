@@ -3,8 +3,8 @@ from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext
 
 # Replace 'YOUR_TOKEN_HERE' with your actual bot token
-BOT_TOKEN = 'YOUR_TOKEN_HERE'
-SEARCH_DIR = '/path/to/search/directory'  # Replace with the directory you want to search
+BOT_TOKEN = '7323694305:AAGqEwDEfXn1m2D9Yakf4MD3jv6h3mC8FW4'
+SEARCH_DIR = '-1002459968261'  # Replace with the directory you want to search
 
 def start(update: Update, context: CallbackContext) -> None:
     update.message.reply_text('Hi! I am your file search bot. Use /search <filename> to search for a file.')
